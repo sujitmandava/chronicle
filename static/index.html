@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Staleness RAG – Dev UI</title>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    textarea { width: 100%; height: 120px; }
+    button { margin-top: 10px; padding: 8px 16px; }
+    pre { background: #f5f5f5; padding: 12px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+
+<h2>Staleness-Aware RAG (Dev UI)</h2>
+
+<textarea id="prompt" placeholder="Enter your prompt..."></textarea>
+<br>
+<button onclick="sendPrompt()">Submit</button>
+
+<h3>Response</h3>
+<pre id="response"></pre>
+
+<script>
+async function sendPrompt() {
+  const prompt = document.getElementById("prompt").value;
+  const responseBox = document.getElementById("response");
+
+  responseBox.textContent = "Thinking...";
+
+  const res = await fetch("/prompt", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt })
+  });
+
+  const data = await res.json();
+  responseBox.textContent = data.response;
+}
+</script>
+
+</body>
+</html>
+
