@@ -1,0 +1,25 @@
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+local.file_match "chronicle_logs" {
+  path_targets = [
+    {
+      "__path__" = "/app/logs/*.log",
+      "app"      = "staleness-rag",
+      "job"      = "chronicle",
+    },
+  ]
+}
+
+loki.source.file "chronicle_logs" {
+  targets    = local.file_match.chronicle_logs.targets
+  forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}

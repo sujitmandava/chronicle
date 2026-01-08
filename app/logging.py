@@ -1,14 +1,16 @@
-import logging
 import json
-import sys
+import logging
+from pathlib import Path
 from app.request_context import request_id_ctx
 
 
-def setup_logging(level: str):
+def setup_logging(level: str, log_file: str):
+    log_path = Path(log_file)
+    log_path.parent.mkdir(parents=True, exist_ok=True)
     logging.basicConfig(
         level=level,
-        stream=sys.stdout,
         format="%(message)s",
+        handlers=[logging.FileHandler(log_path, encoding="utf-8")],
     )
 
 

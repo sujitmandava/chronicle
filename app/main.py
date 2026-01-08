@@ -7,7 +7,7 @@ from app.logging import setup_logging
 from app.config import settings
 from app.middleware import request_context_middleware
 
-setup_logging(settings.log_level)
+setup_logging(settings.log_level, settings.log_file)
 
 app = FastAPI(title=settings.app_name)
 
