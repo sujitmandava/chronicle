@@ -1,5 +1,5 @@
 from typing import List, Dict
-import uuid
+import hashlib
 
 def chunk_text(
     text: str,
@@ -25,4 +25,14 @@ def chunk_text(
         start = end - overlap
         idx += 1
 
+    return chunks
+
+
+def hash_text(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def add_chunk_hashes(chunks: List[Dict]) -> List[Dict]:
+    for chunk in chunks:
+        chunk["chunk_hash"] = hash_text(chunk["text"])
     return chunks
